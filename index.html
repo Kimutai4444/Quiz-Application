@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+</head>
+
+<body>
+    <h2>Answer The Quiz</h2>
+    <div id="quizform">
+        <button id="startQuiz" onclick="startQuiz()">Start Attempt</button>
+        <div id="hidden-questions">
+            <!-- Questions will be  added here -->
+        </div>
+        <button id="submit" onclick="submitQuiz()">Submit</button>
+    </div>
+    <p id="results"> </p>
+
+    <script>
+        let questions = ["What's 2+2", "Capital of Kenya", "Most spoken language"];
+        let multipleAnswers = [
+            ["1", "5", "4"],
+            ["Nakuru", "Nairobi", "Mombasa"],
+            ["English", "Kiswahili", "Chinese"]
+        ];
+        let correctAnswer = [2, 1, 0];
+        let userAnswers = Array(questions.length).fill(null);
+        let score = 0;
+
+        function startQuiz() {
+            let questionsContainer = document.getElementById("hidden-questions");
+
+            // Clear previous questions
+            questionsContainer.innerHTML = "";
+
+            // Display each question with radio buttons for choices
+            for (let i = 0; i < questions.length; i++) {
+                let questionDiv = document.createElement("div");
+                questionDiv.classList.add("quiz-ans");
+
+                let questionText = document.createElement("p");
+                questionText.classList.add("question");
+                questionText.textContent = questions[i];
+                questionDiv.appendChild(questionText);
+
+                for (let j = 0; j < multipleAnswers[i].length; j++) {
+                    let radio = document.createElement("input");
+                    radio.type = "radio";
+                    radio.name = "q" + i;
+                    radio.value = j;
+                    radio.addEventListener("change", function () {
+                        userAnswers[i] = parseInt(radio.value);
+                    });
+
+                    let label = document.createElement("label");
+                    label.textContent = multipleAnswers[i][j];
+
+                    questionDiv.appendChild(radio);
+                    questionDiv.appendChild(label);
+                }
+
+                questionsContainer.appendChild(questionDiv);
+            }
+        }
+
+        function submitQuiz() {
+            // Calculate the score
+            for (let i = 0; i < questions.length; i++) {
+                if (userAnswers[i] === correctAnswer[i]) {
+                    score++;
+                }
+            }
+
+            // Display user answers and score
+            document.getElementById("results").textContent = "Score:" + score;
+        }
+    </script>
+
+</body>
+
+</html>
